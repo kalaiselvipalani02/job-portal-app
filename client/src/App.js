@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import Signup from "./components/Signup";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -11,7 +14,14 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
 
-  return <div>Job Portal Web Application -{message}</div>;
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Signup />}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
