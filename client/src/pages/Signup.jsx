@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +9,9 @@ const Signup = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
+  /*Validate Form Fields */
   const validate = () => {
     const newErrors = {};
 
@@ -50,9 +53,10 @@ const Signup = () => {
           "http://localhost:5001/api/signup",
           formData
         );
-        console.log("");
+
         setFormData({ name: "", email: "", password: "" });
         setErrors({});
+        navigate("/login");
       } catch (error) {
         console.log("Signup error:", error.response?.data || error.message);
         setErrors({ api: error.response?.data?.message || "Signup failed" });
@@ -68,6 +72,10 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Create an Account
         </h2>
+        {/*Show API error message */}
+        {errors.api && (
+          <p className="text-red-500 text-center mb-2">{errors.api}</p>
+        )}
         <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Name */}
           <div>

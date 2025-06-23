@@ -1,26 +1,31 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import Signup from "./components/Signup";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
+import UserNavbar from "./components/UserNavBar";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-  const [message, setMessage] = useState("");
+  const location = useLocation();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5001/") // Call backend
-      .then((res) => setMessage(res.data))
-      .catch((err) => console.error(err));
-  }, []);
+  const isAuthPage = ["/signup", "/login", "/"].includes(location.pathname);
 
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {isAuthPage ? <Navbar /> : <UserNavbar />}
+
       <Routes>
         <Route path="/" element={<Signup />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/adminDashboard" element={<AdminDashboard />}></Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

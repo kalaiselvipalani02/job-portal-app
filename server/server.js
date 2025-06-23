@@ -21,6 +21,22 @@ app.get("/", (req, res) => {
 
 app.use("/api", authRoutes);
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URL, // or MONGO_URI
+      collectionName: "sessions",
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      httpOnly: true,
+      secure: false, // set to true if using HTTPS
+    },
+  })
+);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
