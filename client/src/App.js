@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/") // Call backend
+      .get("http://localhost:5001/") // Call backend
       .then((res) => setMessage(res.data))
       .catch((err) => console.error(err));
   }, []);
