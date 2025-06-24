@@ -10,14 +10,14 @@ const UserNavbar = () => {
     // Remove token from localStorage (if using JWT)
     localStorage.removeItem("token");
     //API call
-    await axios.post("http://localhost:5000/api/logout");
+    await axios.post("http://localhost:5001/api/logout");
     navigate("/login");
   };
   return (
     <div>
       <nav className="bg-white shadow p-4 flex justify-between">
-        <div className="font-bold text-blue-700">Job Portal</div>
-        <ul className="flex gap-4">
+        <div className="font-bold text-blue-700 ">Job Portal</div>
+        {/* <ul className="flex gap-4">
           <li>
             <Link to="/dashboard" className="text-blue-600 hover:underline">
               Dashboard
@@ -36,7 +36,7 @@ const UserNavbar = () => {
               Logout
             </button>
           </li>
-        </ul>
+        </ul> */}
       </nav>
     </div>
   );

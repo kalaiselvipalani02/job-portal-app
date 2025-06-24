@@ -41,18 +41,19 @@ const Login = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const res = await axios("http://localhost:5000/api/login", formData);
+        const res = await axios.post(
+          "http://localhost:5001/api/login",
+          formData
+        );
 
-        const data = await res.json();
+        setMessage("Login successful!");
 
-        if (res.ok) {
-          setMessage("Login successful!");
-
-          // Example: Save token, redirect, etc.
-          localStorage.setItem("token", data.token);
+        // Example: Save token, redirect, etc.
+        localStorage.setItem("token", res.data.token);
+        if (res.data.role === "jobseeker") {
           navigate("/dashboard");
         } else {
-          setMessage(data.error || "Login failed");
+          navigate("/adminDashboard");
         }
       } catch (error) {
         console.error("Login error:", error);

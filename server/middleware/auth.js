@@ -3,7 +3,11 @@ const User = require("../models/User");
 
 const authenticateToken = async (req, res, next) => {
   try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const authHeader = req.header("Authorization");
+    const token =
+      authHeader && authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : authHeader;
 
     if (!token) {
       return res
@@ -11,7 +15,8 @@ const authenticateToken = async (req, res, next) => {
         .json({ message: "Access denied. No token provided." });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select("-password");
+
+    const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
@@ -35,4 +40,14 @@ const requireRole = (roles) => {
   };
 };
 
-module.exports = { authenticateToken, requireRole };
+const verifyAdmin = async (req, res, next) => {
+  //user
+  if (req.user.role !== "jobseeker") return res.sendStatus(403);
+
+  //recruiter
+  if (req.user.role !== "recruiter") return res.sendStatus(403);
+
+  next();
+};
+
+module.exports = { authenticateToken, requireRole, verifyAdmin };

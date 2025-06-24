@@ -30,10 +30,13 @@ const login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    req.session.userId = user._id;
-    res
-      .status(200)
-      .json({ message: "Login successful", user: { email: user.email } });
+    //req.session.userId = user._id;
+
+    res.status(200).json({
+      message: "Login successful",
+      user: { email: user.email },
+      token,
+    });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ error: "Internal server error" });
